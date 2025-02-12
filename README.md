@@ -1,0 +1,2 @@
+# EtteremSim
+Etterem menedzsment szimulácio

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EtteremSimulator
 {
@@ -10,10 +6,18 @@ namespace EtteremSimulator
     {
         public int Szam { get; }
         public Vendeg Vendeg { get; set; }
+        public bool Foglalt { get; set; }
 
         public Asztal(int szam)
         {
             Szam = szam;
+            Foglalt = false;
+        }
+
+        public void Takarit()
+        {
+            Vendeg = null;
+            Foglalt = false;
         }
     }
 }

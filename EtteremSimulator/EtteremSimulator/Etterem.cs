@@ -83,7 +83,7 @@ namespace EtteremSimulator
             {
                 Console.WriteLine($"\n--- Iteráció {i + 1} ---");
 
-                // Vendégek érkezése
+                
                 int asztalSzam = rnd.Next(asztalok.Length);
                 Asztal asztal = asztalok[asztalSzam];
 
@@ -94,7 +94,7 @@ namespace EtteremSimulator
                     Console.WriteLine($"Asztal {asztal.Szam} üres. Új vendég érkezett: {asztal.Vendeg.Szam} fő.");
                 }
 
-                // Rendelés felvétele
+                
                 if (asztal.Vendeg != null && !asztal.Vendeg.Rendelt)
                 {
                     Etel rendeles = menu[rnd.Next(menu.Count)];
@@ -105,7 +105,7 @@ namespace EtteremSimulator
                     pincer.RendelesFelvesz(asztal);
                 }
 
-                // Pincérek és szakácsok dolgoznak
+                
                 for (int j = 0; j < pincerek.Length; j++)
                 {
                     if (pincerek[j].RendelesekSzama() > 0)
@@ -118,7 +118,7 @@ namespace EtteremSimulator
                     }
                 }
 
-                // Vendégek elégedettségének ellenőrzése
+                
                 for (int j = 0; j < asztalok.Length; j++)
                 {
                     if (asztalok[j].Vendeg != null && asztalok[j].Vendeg.EtelFogyasztva)
@@ -128,7 +128,7 @@ namespace EtteremSimulator
                     }
                 }
 
-                Thread.Sleep(1000); // Szimulációs lassítás
+                Thread.Sleep(1000);
             }
         }
 

@@ -17,7 +17,7 @@ namespace EtteremSimulator
 
         public void EtelKeszit(Etel etel)
         {
-            Thread.Sleep(etel.ElkeszitesiIdo * 100); // Szimuláljuk az étel elkészítésének idejét
+            Thread.Sleep(etel.ElkeszitesiIdo * 100);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace EtteremSimulator
 
         static void Menu(Etterem etterem)
         {
-            string[] options = { "Szimuláció indítása", "Asztal foglalása", "Étlap megtekintése", "Vendégek listázása", "Asztalok takarítása", "Szezonális menü választása", "Kilépés" };
+            string[] options = { "Szimuláció indítása", "Asztal foglalása", "Étlap megtekintése", "Vendégek listázása", "Szezonális menü választása", "Kilépés" };
             int selectedIndex = 0;
             ConsoleKey key;
 
@@ -66,12 +66,9 @@ namespace EtteremSimulator
                     VendegListazas(etterem);
                     break;
                 case 4:
-                    AsztalTakaritas(etterem);
-                    break;
-                case 5:
                     SzezonValtas(etterem);
                     break;
-                case 6:
+                case 5:
                     Environment.Exit(0);
                     break;
             }
@@ -138,11 +135,7 @@ namespace EtteremSimulator
             }
         }
 
-        static void AsztalTakaritas(Etterem etterem)
-        {
-            etterem.AsztalTakaritas();
-            Console.WriteLine("Asztalok takarítva.");
-        }
+        
 
         static void SzezonValtas(Etterem etterem)
         {

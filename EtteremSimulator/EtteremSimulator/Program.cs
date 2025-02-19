@@ -4,7 +4,9 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Etterem etterem = new Etterem();
+            UI ui = new UI(etterem);
+            ui.Menu();
         }
     }
 }

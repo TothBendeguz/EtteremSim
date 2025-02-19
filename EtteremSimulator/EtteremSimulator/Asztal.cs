@@ -8,5 +8,12 @@ namespace EtteremSimulator
 {
     internal class Asztal
     {
+        public int Szam { get; }
+        public Vendeg Vendeg { get; set; }
+
+        public Asztal(int szam)
+        {
+            Szam = szam;
+        }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace EtteremSimulator
 {
@@ -11,9 +9,10 @@ namespace EtteremSimulator
         private Asztal[] asztalok;
         private Pincer[] pincerek;
         private Szakacs[] szakacsok;
-        private Etel[] menu;
+        private List<Etel> menu;
+        private string aktualisSzezon;
 
-        public Etel[] Menu { get { return menu; } }
+        public List<Etel> Menu { get { return menu; } }
 
         public Etterem()
         {
@@ -35,13 +34,45 @@ namespace EtteremSimulator
                 szakacsok[i] = new Szakacs(i + 1);
             }
 
-            menu = new Etel[]
+            aktualisSzezon = "Általános";
+            menu = new List<Etel>
             {
-            new Etel("Húsleves", 15),
-            new Etel("Sült csirke", 20),
-            new Etel("Spagetti", 18),
-            new Etel("Pizza", 25)
+                new Etel("Húsleves", 15),
+                new Etel("Sült csirke", 20),
+                new Etel("Spagetti", 18),
+                new Etel("Pizza", 25)
             };
+        }
+
+        public void SzezonValtas(string szezon)
+        {
+            aktualisSzezon = szezon;
+            menu.Clear();
+            switch (szezon)
+            {
+                case "Tavasz":
+                    menu.Add(new Etel("Tavaszi saláta", 10, "Tavasz"));
+                    menu.Add(new Etel("Rántott hús", 22, "Tavasz"));
+                    break;
+                case "Nyár":
+                    menu.Add(new Etel("Grillezett csirke", 18, "Nyár"));
+                    menu.Add(new Etel("Jégkrém", 5, "Nyár"));
+                    break;
+                case "Ősz":
+                    menu.Add(new Etel("Gombaleves", 12, "Ősz"));
+                    menu.Add(new Etel("Sült pulyka", 30, "Ősz"));
+                    break;
+                case "Tél":
+                    menu.Add(new Etel("Halászlé", 20, "Tél"));
+                    menu.Add(new Etel("Töltött káposzta", 25, "Tél"));
+                    break;
+                default:
+                    menu.Add(new Etel("Húsleves", 15));
+                    menu.Add(new Etel("Sült csirke", 20));
+                    menu.Add(new Etel("Spagetti", 18));
+                    menu.Add(new Etel("Pizza", 25));
+                    break;
+            }
         }
 
         public void Indit(int iteraciok)
@@ -56,16 +87,17 @@ namespace EtteremSimulator
                 int asztalSzam = rnd.Next(asztalok.Length);
                 Asztal asztal = asztalok[asztalSzam];
 
-                if (asztal.Vendeg == null)
+                if (asztal.Vendeg == null && !asztal.Foglalt)
                 {
                     asztal.Vendeg = new Vendeg(rnd.Next(1, 5));
+                    asztal.Foglalt = true;
                     Console.WriteLine($"Asztal {asztal.Szam} üres. Új vendég érkezett: {asztal.Vendeg.Szam} fő.");
                 }
 
                 // Rendelés felvétele
                 if (asztal.Vendeg != null && !asztal.Vendeg.Rendelt)
                 {
-                    Etel rendeles = menu[rnd.Next(menu.Length)];
+                    Etel rendeles = menu[rnd.Next(menu.Count)];
                     asztal.Vendeg.Rendel(rendeles);
                     Console.WriteLine($"Asztal {asztal.Szam} rendelt: {rendeles.Nev}");
 
@@ -92,7 +124,7 @@ namespace EtteremSimulator
                     if (asztalok[j].Vendeg != null && asztalok[j].Vendeg.EtelFogyasztva)
                     {
                         Console.WriteLine($"Asztal {asztalok[j].Szam} vendégei elégedettek: {asztalok[j].Vendeg.Elegedettseg}%");
-                        asztalok[j].Vendeg = null;
+                        asztalok[j].Takarit();
                     }
                 }
 
@@ -104,13 +136,25 @@ namespace EtteremSimulator
         {
             for (int i = 0; i < asztalok.Length; i++)
             {
-                if (asztalok[i].Vendeg == null)
+                if (!asztalok[i].Foglalt)
                 {
                     asztalok[i].Vendeg = new Vendeg(foszam);
+                    asztalok[i].Foglalt = true;
                     return true;
                 }
             }
             return false;
+        }
+
+        public void AsztalTakaritas()
+        {
+            for (int i = 0; i < asztalok.Length; i++)
+            {
+                if (asztalok[i].Foglalt && asztalok[i].Vendeg == null)
+                {
+                    asztalok[i].Takarit();
+                }
+            }
         }
 
         public Dictionary<int, Vendeg> VendegLista()

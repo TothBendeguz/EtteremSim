@@ -1,4 +1,7 @@
-﻿namespace EtteremSimulator
+﻿using System;
+using System.Collections.Generic;
+
+namespace EtteremSimulator
 {
     internal class Program
     {
@@ -10,7 +13,7 @@
 
         static void Menu(Etterem etterem)
         {
-            string[] options = { "Szimuláció indítása", "Asztal foglalása", "Étlap megtekintése", "Vendégek listázása", "Kilépés" };
+            string[] options = { "Szimuláció indítása", "Asztal foglalása", "Étlap megtekintése", "Vendégek listázása", "Asztalok takarítása", "Szezonális menü választása", "Kilépés" };
             int selectedIndex = 0;
             ConsoleKey key;
 
@@ -32,10 +35,10 @@
                 key = Console.ReadKey(true).Key;
                 switch (key)
                 {
-                    case ConsoleKey.W:
+                    case ConsoleKey.UpArrow:
                         selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
                         break;
-                    case ConsoleKey.S:
+                    case ConsoleKey.DownArrow:
                         selectedIndex = (selectedIndex + 1) % options.Length;
                         break;
                     case ConsoleKey.Enter:
@@ -63,6 +66,12 @@
                     VendegListazas(etterem);
                     break;
                 case 4:
+                    AsztalTakaritas(etterem);
+                    break;
+                case 5:
+                    SzezonValtas(etterem);
+                    break;
+                case 6:
                     Environment.Exit(0);
                     break;
             }
@@ -128,6 +137,49 @@
                 Console.WriteLine("Nincsenek vendégek.");
             }
         }
+
+        static void AsztalTakaritas(Etterem etterem)
+        {
+            etterem.AsztalTakaritas();
+            Console.WriteLine("Asztalok takarítva.");
+        }
+
+        static void SzezonValtas(Etterem etterem)
+        {
+            string[] szezonok = { "Tavasz", "Nyár", "Ősz", "Tél" };
+            int selectedIndex = 0;
+            ConsoleKey key;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("=== Szezonális Menü Választása ===");
+                for (int i = 0; i < szezonok.Length; i++)
+                {
+                    if (i == selectedIndex)
+                    {
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    Console.WriteLine(szezonok[i]);
+                    Console.ResetColor();
+                }
+
+                key = Console.ReadKey(true).Key;
+                switch (key)
+                {
+                    case ConsoleKey.UpArrow:
+                        selectedIndex = (selectedIndex - 1 + szezonok.Length) % szezonok.Length;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        selectedIndex = (selectedIndex + 1) % szezonok.Length;
+                        break;
+                    case ConsoleKey.Enter:
+                        etterem.SzezonValtas(szezonok[selectedIndex]);
+                        Console.WriteLine($"Szezonális menü beállítva: {szezonok[selectedIndex]}");
+                        return;
+                }
+            } while (key != ConsoleKey.Escape);
+        }
     }
 }
-

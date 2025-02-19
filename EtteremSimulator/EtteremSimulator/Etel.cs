@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EtteremSimulator
 {
@@ -10,11 +6,13 @@ namespace EtteremSimulator
     {
         public string Nev { get; }
         public int ElkeszitesiIdo { get; }
+        public string Szezon { get; }
 
-        public Etel(string nev, int elkeszitesiIdo)
+        public Etel(string nev, int elkeszitesiIdo, string szezon = "Általános")
         {
             Nev = nev;
             ElkeszitesiIdo = elkeszitesiIdo;
+            Szezon = szezon;
         }
     }
 }
